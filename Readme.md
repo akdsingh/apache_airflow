@@ -59,18 +59,49 @@ t3 = BashOperator(
 
 Operators Categories
  - Sensors
-  - A certain type of operator that will keep running until a certain criteria is met. Example, wating for certain time, external file or upstream data source. Some of them are :-
+   - A certain type of operator that will keep running until a certain criteria is met. Example, wating for certain time, external file or upstream data source. Some of them are :-
    - Hdfssensor: Waits for file or folder to land in HDFS.
    - NamedHivePartitionSensor: check whether the most recent partition of a Hive table is available for downstream processing.
 
  - Operators
-  - Triggers a certain action (e.g run a bash command, execute python code, or execute a Hive Query). Some of them are :-
-   - BashOperator
-   - PythonOperator
-   - HiveOperator
-   - BigQueryOperator
+   - Triggers a certain action (e.g run a bash command, execute python code, or execute a Hive Query). Some of them are :-
+     - BashOperator
+     - PythonOperator
+     - HiveOperator
+     - BigQueryOperator
 
  - Transfers
   - moves data from one location to another.
-   - MySqlToHiveTransfer
-   - S3ToRedShiftTransfer
+     - MySqlToHiveTransfer
+     - S3ToRedShiftTransfer
+  
+Airflow - Core Components
+ - Scheduler: Triggers schedule workflows and submits tasks to executor to run
+ - Executor: Handles running tasks
+ - Worker: Runs the actual tasks
+ - Webserver: User interface to inspect, trigger and debug DAGs and tasks behaviour
+ - Metadata Database: Stores information about DAGs and tasks states
+ - Dags Folder: directory where all DAGs code is persisted, read by scheduler and executor
+ 
+                               ------------------------
+                               |----------------------|←------------------→
+            ------             ||                    ||                   ⬇
+            |user|------------>||  FrontEnd          ||    -----------  --------
+            ------             ||  Webserver Backend ||←--→| metadata|  | Logs |
+                               |----------------------|    |  DB     |  --------
+            --------           |                      |    -----------     |
+            | Dags |---------->|----------------------|       ↑            |
+            --------           ||   Scheduler        ||       |            |
+                               ||   Executor         ||       |            |
+                               |----------------------|       |            |
+                               ------------------------       |            |
+                                        |                     |            |
+                                        ⬇                     ⬇            ⬇
+            ----------------------------------------------------------------------------
+            |Workers    -----   -----  -----  -----  -----  -----                      | 
+            |           | 1 |   | 2 |  | 3 |  | 4 |  | 5 |  | 6 |                      |
+            |           -----   -----  -----  -----  -----  -----                      |
+            ----------------------------------------------------------------------------
+
+
+                    
